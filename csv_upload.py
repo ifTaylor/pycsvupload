@@ -24,10 +24,20 @@ class CsvUpload:
 
         unpacked_data = [
             {
-                column_name: row[column_name]
-                for column_name in self.columns.values()
+                'ID': index + 1,
+                **{
+                    column_name: row[column_name]
+                    for column_name in self.columns.values()
+                }
             }
-            for _, row in self.df.iterrows()
+            for index, row in self.df.iterrows()
         ]
 
         return unpacked_data
+
+    def get_ids_by_column_value(self, column_name, value):
+        matched_ids = []
+        for index, row in self.df.iterrows():
+            if row[column_name] == value:
+                matched_ids.append(row['ID'])
+        return matched_ids
